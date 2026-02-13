@@ -4,47 +4,71 @@
   <meta charset="UTF-8">
   <title>Isabel Moutinho – CV</title>
 
+  <!-- PDF.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
   <style>
     body {
       margin: 0;
-      padding: 0;
-      background: #f5f5f5;
-      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .wrapper {
+      max-width: 820px;
+      margin: 40px auto;
+      padding: 0 20px;
     }
 
     .page {
-      max-width: 900px;      /* controls page width */
-      margin: 40px auto;     /* centers the content */
-      padding: 20px;
       background: white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .pdf-container {
+    canvas {
       width: 100%;
-      height: 90vh;
-    }
-
-    embed {
-      width: 100%;
-      height: 100%;
-      border: none;
+      height: auto;
+      display: block;
     }
   </style>
 </head>
 
 <body>
+  <div class="wrapper" id="pdf-container"></div>
 
-  <div class="page">
-    <div class="pdf-container">
-      <iframe src="Isabel Moutinho CV.pdf" width="100%" height="600px"></iframe>
-    </div>
-  </div>
+  <script>
+    const url = 'cv.pdf';
 
+    const pdfjsLib = window['pdfjs-dist/build/pdf'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    pdfjsLib.getDocument(url).promise.then(pdf => {
+      const container = document.getElementById('pdf-container');
+
+      for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+        pdf.getPage(pageNum).then(page => {
+          const viewport = page.getViewport({ scale: 1.5 });
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+
+          page.render({
+            canvasContext: context,
+            viewport: viewport
+          });
+
+          const pageDiv = document.createElement('div');
+          pageDiv.className = 'page';
+          pageDiv.appendChild(canvas);
+
+          container.appendChild(pageDiv);
+        });
+      }
+    });
+  </script>
 </body>
 </html>
