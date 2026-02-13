@@ -3,80 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Isabel Moutinho – CV</title>
-
-  <!-- PDF.js -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-
-  <style>
-    body {
-      margin: 0;
-      background: linear-gradient(135deg, #042b6b, #e0f0ff);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      font-family: system-ui, sans-serif;
-    }
-
-    .wrapper {
-      max-width: 900px;   /* control visible page width */
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-
-    .page {
-      background: white;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
-      margin-bottom: 40px;
-      display: flex;
-      justify-content: center; /* center the canvas */
-    }
-
-    canvas {
-      width: 100%;  /* scale down to fit wrapper */
-      height: auto; /* keep aspect ratio */
-      display: block;
-    }
-  </style>
 </head>
 
 <body>
-  <div class="wrapper" id="pdf-container"></div>
-  <script>
-    const url = 'Isabel Moutinho CV.pdf';
-    const pdfjsLib = window['pdfjs-dist/build/pdf'];
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-    const dpr = window.devicePixelRatio || 1;
-
-    pdfjsLib.getDocument(url).promise.then(pdf => {
-      const container = document.getElementById('pdf-container');
-
-      pdf.getPage(1).then(page => {
-        const scale = 3.0; // high-res for sharp text
-        const viewport = page.getViewport({ scale });
-
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-
-        // SUPER HIGH RESOLUTION (HiDPI)
-        canvas.width = viewport.width * dpr;
-        canvas.height = viewport.height * dpr;
-        context.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-        page.render({
-          canvasContext: context,
-          viewport: viewport
-        });
-
-        const pageDiv = document.createElement('div');
-        pageDiv.className = 'page';
-        pageDiv.appendChild(canvas);
-
-        container.appendChild(pageDiv);
-      });
-    });
-  </script>
+  <iframe src="CV.pdf#toolbar=0&navpanes=0&scrollbar=0" title="CV PDF"></iframe>
 </body>
 </html>
