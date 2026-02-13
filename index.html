@@ -15,7 +15,7 @@
     }
 
     .wrapper {
-      max-width: 900px;
+      max-width: 900px;   /* control visible page width */
       margin: 40px auto;
       padding: 0 20px;
     }
@@ -24,11 +24,13 @@
       background: white;
       box-shadow: 0 6px 18px rgba(0,0,0,0.1);
       margin-bottom: 40px;
+      display: flex;
+      justify-content: center; /* center the canvas */
     }
 
     canvas {
-      width: 100%;
-      height: auto;
+      width: 100%;  /* scale down to fit wrapper */
+      height: auto; /* keep aspect ratio */
       display: block;
     }
   </style>
@@ -38,7 +40,7 @@
   <div class="wrapper" id="pdf-container"></div>
 
   <script>
-    const url = 'Isabel Moutinho CV.pdf';
+    const url = 'Isabel Moutinho.pdf';
     const pdfjsLib = window['pdfjs-dist/build/pdf'];
     pdfjsLib.GlobalWorkerOptions.workerSrc =
       'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -48,20 +50,16 @@
     pdfjsLib.getDocument(url).promise.then(pdf => {
       const container = document.getElementById('pdf-container');
 
-      // We only have 1 page
       pdf.getPage(1).then(page => {
-        // SUPER HIGH RESOLUTION SCALE
-        const scale = 3.0; // can go 3–4 for extreme sharpness
+        const scale = 3.0; // high-res for sharp text
         const viewport = page.getViewport({ scale });
 
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
 
+        // SUPER HIGH RESOLUTION (HiDPI)
         canvas.width = viewport.width * dpr;
         canvas.height = viewport.height * dpr;
-        canvas.style.width = viewport.width + 'px';
-        canvas.style.height = viewport.height + 'px';
-
         context.setTransform(dpr, 0, 0, dpr, 0, 0);
 
         page.render({
@@ -77,4 +75,5 @@
       });
     });
   </script>
-</bo
+</body>
+</html>
