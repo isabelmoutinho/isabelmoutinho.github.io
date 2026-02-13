@@ -3,9 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <title>Isabel Moutinho – CV</title>
-</head>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden; /* remove scrollbars */
+      background: transparent; /* no background behind PDF */
+    }
 
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none; /* no border */
+      display: block;
+    }
+  </style>
+</head>
 <body>
-  <iframe src="CV.pdf#toolbar=0&navpanes=0&scrollbar=0" title="CV PDF"></iframe>
+  <iframe 
+    src="CV.pdf#toolbar=0&navpanes=0&scrollbar=0" 
+    title="CV PDF">
+  </iframe>
 </body>
 </html>
